@@ -85,6 +85,9 @@ func (c *Client) Init() error {
 	if !strings.Contains(c.LocalAddr, ":") {
 		c.LocalAddr += ":0"
 	}
+	if err := validateLocalAddr(c.LocalAddr); err != nil {
+		return err
+	}
 
 	c.natType = NatTypeBlocked
 

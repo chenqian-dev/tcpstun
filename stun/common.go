@@ -3,28 +3,8 @@ package stun
 import (
 	"context"
 	"net"
-	"syscall"
 	"time"
-
-	"golang.org/x/sys/unix"
 )
-
-func Control(network, address string, c syscall.RawConn) (err error) {
-	if err := c.Control(func(fd uintptr) {
-		err = unix.SetsockoptInt(int(fd), unix.SOL_SOCKET, unix.SO_REUSEADDR, 1)
-		if err != nil {
-			return
-		}
-
-		err = unix.SetsockoptInt(int(fd), unix.SOL_SOCKET, unix.SO_REUSEPORT, 1)
-		if err != nil {
-			return
-		}
-	}); err != nil {
-		return err
-	}
-	return err
-}
 
 func ListenTcp(ctx context.Context, laddr string) (net.Listener, error) {
 	cfg := net.ListenConfig{
